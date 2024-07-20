@@ -47,7 +47,8 @@ public class SubmoduleDepsExtension
 		this.compileOnly = project.getConfigurations().getByName(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME);
 	}
 
-	public ProjectDependency api(String subproject) {
+	public ProjectDependency api(String subproject)
+	{
 		return api(subproject, it -> {});
 	}
 
@@ -71,7 +72,8 @@ public class SubmoduleDepsExtension
 		return projectDependency;
 	}
 
-	public ProjectDependency compileOnlyApi(String subproject) {
+	public ProjectDependency compileOnlyApi(String subproject)
+	{
 		return compileOnlyApi(subproject, it -> {});
 	}
 
@@ -89,7 +91,8 @@ public class SubmoduleDepsExtension
 		return projectDependency;
 	}
 
-	public ProjectDependency runtimeOnly(String subproject) {
+	public ProjectDependency runtimeOnly(String subproject)
+	{
 		return runtimeOnly(subproject, it -> {});
 	}
 
@@ -107,7 +110,8 @@ public class SubmoduleDepsExtension
 		return projectDependency;
 	}
 
-	public ProjectDependency implementation(String subproject) {
+	public ProjectDependency implementation(String subproject)
+	{
 		return implementation(subproject, it -> {});
 	}
 
@@ -129,7 +133,8 @@ public class SubmoduleDepsExtension
 		return projectDependency;
 	}
 
-	public ProjectDependency compileOnly(String subproject) {
+	public ProjectDependency compileOnly(String subproject)
+	{
 		return compileOnly(subproject, it -> {});
 	}
 
@@ -145,7 +150,8 @@ public class SubmoduleDepsExtension
 		return projectDependency;
 	}
 
-	public ProjectDependency localRuntime(String subproject) {
+	public ProjectDependency localRuntime(String subproject)
+	{
 		return localRuntime(subproject, it -> {});
 	}
 
