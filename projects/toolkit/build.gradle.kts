@@ -1,12 +1,15 @@
+plugins {
+	id("com.parzivail.internal.submoduledeps")
+}
+
 repositories {
-	maven {
-		url = "https://maven.wispforest.io/"
+	maven(url = "https://maven.wispforest.io/") {
 		name = "WispForest"
 	}
 }
 
 dependencies {
-	api(project(path: ":projects:pswg", configuration: "namedElements"))
+	submoduledeps.api(":projects:pswg")
 
 	modImplementation("org.objenesis:objenesis:3.2")
 	include("org.objenesis:objenesis:3.2")

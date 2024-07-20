@@ -1,17 +1,26 @@
 import java.io.ByteArrayOutputStream
 
 plugins {
-	id("com.parzivail.internal.pswg-submodule-dependencies") version "0.1"
 	id("fabric-loom") version "1.4-SNAPSHOT"
+	id("com.parzivail.internal.submoduledeps")
 	`maven-publish`
 }
 
-subprojects {
-	if (!file("project.gradle").exists()) return@subprojects
+val loomProjects: Set<String> = setOf(
+	":",
+	":projects:addon-clonewars",
+	":projects:addon-test",
+	":projects:pswg",
+	":projects:tarkin",
+	":projects:toolkit"
+)
 
-	apply(plugin = "com.parzivail.internal.pswg-submodule-dependencies")
+subprojects {
+	if (!loomProjects.contains(path)) return@subprojects
+
 	apply(plugin = "fabric-loom")
 	apply(plugin = "maven-publish")
+	apply(plugin = "com.parzivail.internal.submoduledeps")
 }
 
 val archives_base_name: String by project.ext
@@ -51,7 +60,7 @@ allprojects {
 		options.compilerArgs.addAll(arrayOf("-Xmaxerrs", "1000", "-Xdiags:verbose"))
 	}
 
-	if (!file("project.gradle").exists()) return@allprojects
+	if (!loomProjects.contains(path)) return@allprojects
 
 	repositories {
 		mavenCentral()
@@ -142,8 +151,10 @@ allprojects {
 			// mavenLocal()
 		}
 	}
+}
 
-	apply(from = "project.gradle")
+dependencies {
+	submoduledeps.runtimeOnly(":projects:pswg")
 }
 
 tasks.assemble {

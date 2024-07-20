@@ -1,0 +1,12 @@
+plugins {
+	id 'groovy-gradle-plugin'
+}
+
+gradlePlugin {
+	plugins {
+		submoduledeps {
+			id = 'com.parzivail.internal.submoduledeps'
+			implementationClass = 'com.parzivail.internal.submoduledeps.SubmoduleDepsPlugin'
+		}
+	}
+}

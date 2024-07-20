@@ -8,6 +8,7 @@ import org.apache.hc.core5.http.ContentType
 plugins {
 	id("com.modrinth.minotaur") version "2.+"
 	id("io.github.CDAGaming.cursegradle") version "1.6.0"
+	id("com.parzivail.internal.submoduledeps")
 	signing
 }
 
@@ -16,6 +17,51 @@ buildscript {
 		classpath("org.apache.httpcomponents.client5:httpclient5-fluent:5.2.1")
 		classpath("com.github.hal4j:uritemplate:1.3.0")
 	}
+}
+
+loom {
+	accessWidenerPath.set(file("src/main/resources/pswg.accesswidener"))
+}
+
+dependencies {
+	compileOnly(project(":projects:tarkin-api"))
+
+	// CCA Base
+	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.findProperty("cca_version")}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.findProperty("cca_version")}")
+	// CCA Entity
+	modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.findProperty("cca_version")}")
+	include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.findProperty("cca_version")}")
+
+	// Cloth Config
+	modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.findProperty("cloth_config_version")}") {
+		exclude(group = "net.fabricmc.fabric-api")
+	}
+	include("me.shedaniel.cloth:cloth-config-fabric:${project.findProperty("cloth_config_version")}")
+
+	// Mod Menu
+	modImplementation("com.terraformersmc:modmenu:${project.findProperty("modmenu_version")}")
+
+	// LambDynamicLights
+	modCompileOnly("dev.lambdaurora:lambdynamiclights:${project.findProperty("lambdynamiclights_version")}")
+
+	// Roughly Enough Items
+	modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.findProperty("rei_version")}")
+	modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.findProperty("rei_version")}")
+
+	// LibZoomer
+	modImplementation("com.parzivail.internal:LibZoomer:${project.findProperty("libzoomer_version")}")
+	include("com.parzivail.internal:LibZoomer:${project.findProperty("libzoomer_version")}")
+
+	// Trinkets
+	modImplementation("dev.emi:trinkets:${project.findProperty("trinkets_version")}")
+	include("dev.emi:trinkets:${project.findProperty("trinkets_version")}")
+
+	// Gravity Changer
+	modCompileOnly("maven.modrinth:gravity-api:${project.findProperty("gravity_changer_version")}")
+
+	// Iris
+	modCompileOnly("maven.modrinth:iris:${project.findProperty("iris_version")}")
 }
 
 java {
