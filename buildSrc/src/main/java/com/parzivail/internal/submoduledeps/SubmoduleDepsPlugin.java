@@ -4,6 +4,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.attributes.Attribute;
+import org.gradle.api.plugins.JavaPlugin;
 
 import java.util.Objects;
 
@@ -33,6 +34,12 @@ public class SubmoduleDepsPlugin implements Plugin<Project>
 		var modCompileOnlyApi = project.getConfigurations().getByName("modCompileOnlyApi");
 		var modImplementation = project.getConfigurations().getByName("modImplementation");
 		var modRuntimeOnly = project.getConfigurations().getByName("modRuntimeOnly");
+
+		var api = project.getConfigurations().getByName(JavaPlugin.API_CONFIGURATION_NAME);
+		var compileOnlyApi = project.getConfigurations().getByName(JavaPlugin.COMPILE_ONLY_API_CONFIGURATION_NAME);
+		var implementation = project.getConfigurations().getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME);
+		var runtimeOnly = project.getConfigurations().getByName(JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME);
+
 		var namedElements = project.getConfigurations().maybeCreate("namedElements");
 
 		var runtimeElementsDependencies = project.getConfigurations().maybeCreate(RUNTIME_ELEMENTS_DEPENDENCIES);
@@ -44,6 +51,9 @@ public class SubmoduleDepsPlugin implements Plugin<Project>
 		runtimeElementsDependencies.getDependencies().addAllLater(project.provider(modImplementation::getDependencies));
 		runtimeElementsDependencies.getDependencies().addAllLater(project.provider(modRuntimeOnly::getDependencies));
 		namedRuntimeElements.getOutgoing().getArtifacts().addAllLater(project.provider(namedElements::getAllArtifacts));
+		namedRuntimeElements.getDependencies().addAllLater(project.provider(api::getDependencies));
+		namedRuntimeElements.getDependencies().addAllLater(project.provider(implementation::getDependencies));
+		namedRuntimeElements.getDependencies().addAllLater(project.provider(runtimeOnly::getDependencies));
 		var onlyRuntimeElements = project.getConfigurations().maybeCreate(ONLY_RUNTIME_ELEMENTS);
 		runtimeElements.extendsFrom(onlyRuntimeElements);
 
@@ -55,6 +65,8 @@ public class SubmoduleDepsPlugin implements Plugin<Project>
 		apiElementsDependencies.getDependencies().addAllLater(project.provider(modApi::getDependencies));
 		apiElementsDependencies.getDependencies().addAllLater(project.provider(modCompileOnlyApi::getDependencies));
 		namedApiElements.getOutgoing().getArtifacts().addAllLater(project.provider(namedElements::getAllArtifacts));
+		namedApiElements.getDependencies().addAllLater(project.provider(api::getDependencies));
+		namedApiElements.getDependencies().addAllLater(project.provider(compileOnlyApi::getDependencies));
 		var onlyApiElements = project.getConfigurations().maybeCreate(ONLY_API_ELEMENTS);
 		apiElements.extendsFrom(onlyApiElements);
 
